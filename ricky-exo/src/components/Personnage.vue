@@ -26,10 +26,6 @@ const count = ref(0)
 </div>
 </template>
 
-
-
-
-
 <script>
 
 import { reactive, onMounted } from 'vue';
@@ -83,12 +79,6 @@ export default {
   }
 };
 </script>
-
-
-
-
-
-
 
 <style scoped>
 </style>
