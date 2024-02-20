@@ -11,13 +11,14 @@ const count = ref(0)
 <template>
 <h1 className="text-5xl font-bold underline">Liste des personnages de Rick et Morty !</h1>
 
-<div class="grid grid-cols-4 gap-4 font-mono antialiased my-5">
-  <div v-for="user in users" class="hover:scale-110 shadow-md transition-all ease-in-out bg-slate-100 rounded-lg">
-    <img :src="user.image" alt="User Image" class="rounded-lg">
-    <p class="text-gray-900">{{ user.name }}</p>
+<a href="#">
+  <div class="grid grid-cols-4 gap-4 font-mono antialiased my-5">
+    <div v-for="user in users" class="hover:scale-110 shadow-md transition-all ease-in-out bg-slate-100 rounded-lg">
+      <img :src="user.image" alt="User Image" class="rounded-lg">
+      <p class="text-gray-900">{{ user.name }}</p>
+    </div>
   </div>
-</div>
-
+</a>
 <div class="pagination">
   <button @click="changePage(currentPage - 1)" :disabled="currentPage <= 1">Précédent</button>
   <span class="mx-3">Page {{ currentPage }} sur {{ totalPages }}</span>
@@ -38,13 +39,13 @@ import { ApolloClient, InMemoryCache, gql } from '@apollo/client/core';
 export default {
   data() {
     return {
-      users: [], // Initialiser la liste des utilisateurs à vide
-      currentPage: 1, // Page actuelle
-      totalPages: 0 // Nombre total de pages
+      users: [],
+      currentPage: 1,
+      totalPages: 0
     };
   },
   mounted() {
-    this.loadUsers(this.currentPage); // Charger les utilisateurs pour la page actuelle lors du montage
+    this.loadUsers(this.currentPage);
   },
   methods: {
     async loadUsers(page) {
@@ -77,7 +78,7 @@ export default {
     changePage(page) {
       if (page < 1 || page > this.totalPages) return; // Vérifiez si la page est valide
       this.currentPage = page;
-      this.loadUsers(this.currentPage); // Rechargez les utilisateurs pour la nouvelle page
+      this.loadUsers(this.currentPage); // Rechargez les utilisateurs
     }
   }
 };
@@ -90,7 +91,4 @@ export default {
 
 
 <style scoped>
-.read-the-docs {
-  color: #888;
-}
 </style>
