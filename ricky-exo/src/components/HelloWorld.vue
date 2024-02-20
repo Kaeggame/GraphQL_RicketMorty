@@ -9,29 +9,68 @@ const count = ref(0)
 </script>
 
 <template>
-  <h1>{{ msg }}</h1>
-
-  <div class="card">
-    <button type="button" @click="count++">count is {{ count }}</button>
-    <p>
-      Edit
-      <code>components/HelloWorld.vue</code> to test HMR
-    </p>
-  </div>
-
-  <p>
-    Check out
-    <a href="https://vuejs.org/guide/quick-start.html#local" target="_blank"
-      >create-vue</a
-    >, the official Vue + Vite starter
-  </p>
-  <p>
-    Install
-    <a href="https://github.com/vuejs/language-tools" target="_blank">Volar</a>
-    in your IDE for a better DX
-  </p>
-  <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+    <h1>Liste des personnages</h1>
+    <ul>
+      <li v-for="user in users">
+        {{ user.name }} - {{ user.image }}
+      </li>
+    </ul>
 </template>
+
+
+
+
+
+<script>
+
+import { reactive, onMounted } from 'vue';
+import { ApolloClient, InMemoryCache, gql } from '@apollo/client/core';
+
+
+export default {
+  data() {
+    return {
+      users: [] // Initialiser la liste des utilisateurs à vide
+    };
+  },
+  mounted() {
+    // Appeler la méthode pour charger les utilisateurs lors du montage du composant
+    this.loadUsers();
+  },
+  methods: {
+    async loadUsers() {
+
+      const client = new ApolloClient({
+        uri: 'https://rickandmortyapi.com/graphql', // Remplacez avec l'URL de votre serveur GraphQL
+        cache: new InMemoryCache()
+      });
+      
+      const result = await client.query({
+        query: gql`
+        query {
+          characters(page : 1){
+            results{
+              name
+              image
+            }
+          }
+            
+        }
+
+        `
+      });
+      this.users = result.data.characters.result
+      console.log(this.users)
+    }
+  }
+};
+</script>
+
+
+
+
+
+
 
 <style scoped>
 .read-the-docs {
