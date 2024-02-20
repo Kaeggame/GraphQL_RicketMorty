@@ -1,13 +1,3 @@
-<script setup>
-import { ref } from 'vue'
-
-defineProps({
-  msg: String,
-})
-
-const count = ref(0)
-</script>
-
 <template>
 <h1 className="text-5xl font-bold underline">Liste des personnages de Rick et Morty !</h1>
 
@@ -26,16 +16,12 @@ const count = ref(0)
 </div>
 </template>
 
-
-
-
-
 <script>
 
 import { reactive, onMounted } from 'vue';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client/core';
 
-
+// Affichage de la page 1 par défaut
 export default {
   data() {
     return {
@@ -48,6 +34,7 @@ export default {
     this.loadUsers(this.currentPage);
   },
   methods: {
+    // Charger les personnages d'une certaine page en GraphQL avec Apollo
     async loadUsers(page) {
       const client = new ApolloClient({
         uri: 'https://rickandmortyapi.com/graphql',
@@ -72,13 +59,14 @@ export default {
         }
       });
 
-      this.users = result.data.characters.results;
-      this.totalPages = result.data.characters.info.pages;
+      this.users = result.data.characters.results; // Tableau de donnée de personnage contenant le nom et l'image
+      this.totalPages = result.data.characters.info.pages; // Le nombre de pages, issu de l'api Rick et Morty
+
     },
     changePage(page) {
-      if (page < 1 || page > this.totalPages) return; // Vérifiez si la page est valide
+      if (page < 1 || page > this.totalPages) return; // Vérifier si la page est valide
       this.currentPage = page;
-      this.loadUsers(this.currentPage); // Rechargez les utilisateurs
+      this.loadUsers(this.currentPage); // Recharger les personnages
     }
   }
 };
