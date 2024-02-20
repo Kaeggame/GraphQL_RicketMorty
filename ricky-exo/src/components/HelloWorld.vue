@@ -9,6 +9,8 @@ const count = ref(0)
 </script>
 
 <template>
+
+
     <h1>Liste des personnages</h1>
     <ul>
       <li v-for="user in users">
@@ -59,7 +61,7 @@ export default {
 
         `
       });
-      this.users = result.data.characters.result
+      this.users = result.data.characters.results
       console.log(this.users)
     }
   }
