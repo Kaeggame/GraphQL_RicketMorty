@@ -8,10 +8,8 @@ Ce projet utilise GraphQL pour gérer les requêtes API. Vous pouvez trouver ci-
 
 ## Exercice GraphQL
 
-- [Page de l'exercice](https://graphql-fundamentals.vercel.app/) : Vous pouvez accéder à la page de l'exercice pour pratiquer et améliorer vos compétences en GraphQL.
+- [Page de l'exercice](https://graphql-fundamentals.vercel.app/) : Exercice demandé pour le cours
 
 ## API Rick and Morty
 
 - [Documentation de l'API Rick and Morty](https://rickandmortyapi.com/documentation) : Vous pouvez consulter la documentation de l'API Rick and Morty pour obtenir des informations sur les points de terminaison disponibles et la manière de les utiliser dans votre projet.
-
-N'hésitez pas à explorer ces ressources pour mieux comprendre et utiliser GraphQL dans ce projet.
