@@ -9,13 +9,19 @@ const count = ref(0)
 </script>
 
 <template>
-<h1 className="text-5xl font-bold underline mb-5">Liste des personnages de Rick et Morty !</h1>
+<h1 className="text-5xl font-bold underline">Liste des personnages de Rick et Morty !</h1>
 
-<div class="grid grid-cols-4 gap-4">
-  <div v-for="user in users">
+<div class="grid grid-cols-4 gap-4 font-mono antialiased my-5">
+  <div v-for="user in users" class="hover:scale-110 shadow-md transition-all ease-in-out bg-slate-100 rounded-lg">
     <img :src="user.image" alt="User Image" class="rounded-lg">
-    <p>{{ user.name }} </p>
+    <p class="text-gray-900">{{ user.name }}</p>
   </div>
+</div>
+
+<div class="pagination">
+  <button @click="changePage(currentPage - 1)" :disabled="currentPage <= 1">Précédent</button>
+  <span class="mx-3">Page {{ currentPage }} sur {{ totalPages }}</span>
+  <button @click="changePage(currentPage + 1)" :disabled="currentPage >= totalPages">Suivant</button>
 </div>
 </template>
 
@@ -32,37 +38,46 @@ import { ApolloClient, InMemoryCache, gql } from '@apollo/client/core';
 export default {
   data() {
     return {
-      users: [] // Initialiser la liste des utilisateurs à vide
+      users: [], // Initialiser la liste des utilisateurs à vide
+      currentPage: 1, // Page actuelle
+      totalPages: 0 // Nombre total de pages
     };
   },
   mounted() {
-    // Appeler la méthode pour charger les utilisateurs lors du montage du composant
-    this.loadUsers();
+    this.loadUsers(this.currentPage); // Charger les utilisateurs pour la page actuelle lors du montage
   },
   methods: {
-    async loadUsers() {
-
+    async loadUsers(page) {
       const client = new ApolloClient({
-        uri: 'https://rickandmortyapi.com/graphql', // Remplacez avec l'URL de votre serveur GraphQL
+        uri: 'https://rickandmortyapi.com/graphql',
         cache: new InMemoryCache()
       });
-      
+
       const result = await client.query({
         query: gql`
-        query {
-          characters(page : 1){
-            results{
+        query getCharacters($page: Int!) {
+          characters(page: $page) {
+            info {
+              pages
+            }
+            results {
               name
               image
             }
           }
-            
+        }`,
+        variables: {
+          page: page
         }
-
-        `
       });
-      this.users = result.data.characters.results
-      console.log(this.users)
+
+      this.users = result.data.characters.results;
+      this.totalPages = result.data.characters.info.pages;
+    },
+    changePage(page) {
+      if (page < 1 || page > this.totalPages) return; // Vérifiez si la page est valide
+      this.currentPage = page;
+      this.loadUsers(this.currentPage); // Rechargez les utilisateurs pour la nouvelle page
     }
   }
 };
