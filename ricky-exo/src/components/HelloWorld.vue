@@ -9,14 +9,14 @@ const count = ref(0)
 </script>
 
 <template>
+<h1 className="text-5xl font-bold underline mb-5">Liste des personnages de Rick et Morty !</h1>
 
-
-    <h1>Liste des personnages</h1>
-    <ul>
-      <li v-for="user in users">
-        {{ user.name }} - {{ user.image }}
-      </li>
-    </ul>
+<div class="grid grid-cols-4 gap-4">
+  <div v-for="user in users">
+    <img :src="user.image" alt="User Image" class="rounded-lg">
+    <p>{{ user.name }} </p>
+  </div>
+</div>
 </template>
 
 
