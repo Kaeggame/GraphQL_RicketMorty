@@ -16,16 +16,21 @@
 </div>
 </template>
 
-<script>
+<script lang="ts">
 
 import { reactive, onMounted } from 'vue';
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client/core';
+
+interface User {
+  name: string;
+  image: string;
+}
 
 // Affichage de la page 1 par défaut
 export default {
   data() {
     return {
-      users: [],
+      users: [] as User,
       currentPage: 1,
       totalPages: 0
     };
@@ -35,13 +40,13 @@ export default {
   },
   methods: {
     // Charger les personnages d'une certaine page en GraphQL avec Apollo
-    async loadUsers(page) {
+    async loadUsers(page: number) {
       const client = new ApolloClient({
         uri: 'https://rickandmortyapi.com/graphql',
         cache: new InMemoryCache()
       });
 
-      const result = await client.query({
+      const result: ApolloQueryResult<any> = await client.query({
         query: gql`
         query getCharacters($page: Int!) {
           characters(page: $page) {
@@ -61,9 +66,8 @@ export default {
 
       this.users = result.data.characters.results; // Tableau de donnée de personnage contenant le nom et l'image
       this.totalPages = result.data.characters.info.pages; // Le nombre de pages, issu de l'api Rick et Morty
-
     },
-    changePage(page) {
+    changePage(page: number) {
       if (page < 1 || page > this.totalPages) return; // Vérifier si la page est valide
       this.currentPage = page;
       this.loadUsers(this.currentPage); // Recharger les personnages
@@ -71,6 +75,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-</style>
