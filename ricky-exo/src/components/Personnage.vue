@@ -18,8 +18,7 @@
 
 <script lang="ts">
 
-import { reactive, onMounted } from 'vue';
-import { ApolloClient, InMemoryCache, gql } from '@apollo/client/core';
+import { ApolloClient, InMemoryCache, gql, ApolloQueryResult } from '@apollo/client/core';
 
 interface User {
   name: string;
@@ -30,7 +29,7 @@ interface User {
 export default {
   data() {
     return {
-      users: [] as User,
+      users: [] as User[],
       currentPage: 1,
       totalPages: 0
     };
